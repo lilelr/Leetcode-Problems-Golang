@@ -14,7 +14,7 @@ func sortString(w string) string{
 
 
 
-
+// slow 60ms
 func isAnagram(s string, t string) bool {
 	sLen := len(s)
 	tLen := len(t)
@@ -32,7 +32,41 @@ func isAnagram(s string, t string) bool {
 	return true
 
 }
+
+type strInfo struct  {
+	s string
+	l int
+	m map[rune] int
+
+}
+
+// fast 26ms
+// https://leetcode.com/discuss/103063/a-golang-solution
+func isAnagram2(s string,t string) bool  {
+	var array [2]strInfo
+	for i,v := range []string{s,t} {
+		array[i].s = v
+		array[i].m = make(map[rune] int)
+		for _,val := range array[i].s {
+			array[i].l++
+			array[i].m[val]++
+		}
+	}
+
+	if array[0].l != array[1].l {
+		return false
+	}
+
+	for k0,v0 := range array[0].m{
+		if v1,ok := array[1].m[k0]; !ok || v0 != v1{
+			return false
+		}
+	}
+	return true
+
+}
+
 func main() {
 
-	fmt.Println(isAnagram("abc","cba"))
+	fmt.Println(isAnagram2("abc","cby"))
 }
